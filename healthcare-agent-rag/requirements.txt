@@ -1,0 +1,4 @@
+flask>=3.0
+numpy>=1.26
+scikit-learn>=1.4
+anthropic>=0.40  # optional — only needed if ANTHROPIC_API_KEY is set for LLM-mode synthesis

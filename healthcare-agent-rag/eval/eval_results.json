@@ -1,0 +1,193 @@
+{
+  "summary": {
+    "n_questions": 12,
+    "retrieval_hit@3": 1.0,
+    "retrieval_mrr": 0.861,
+    "avg_keyword_coverage": 0.917,
+    "avg_latency_ms": 0.68,
+    "cost_per_query_usd": 0.0,
+    "mode": "extractive (no ANTHROPIC_API_KEY set \u2014 this is the honest default for a reviewer with no key)"
+  },
+  "rows": [
+    {
+      "id": "Q1",
+      "question": "What documentation is required for a toric IOL prior authorization?",
+      "expected_chunk_id": "PA-104#2",
+      "retrieved_chunk_ids": [
+        "PA-104#2",
+        "PA-104#4",
+        "PA-104#1"
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "keyword_coverage": 1.0,
+      "answer_mode": "extractive",
+      "latency_ms": 0.94
+    },
+    {
+      "id": "Q2",
+      "question": "How often can a member with mild NPDR get a diabetic retinopathy screening?",
+      "expected_chunk_id": "PA-211#2",
+      "retrieved_chunk_ids": [
+        "PA-211#3",
+        "PA-211#2",
+        "PA-211#4"
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 0.5,
+      "keyword_coverage": 1.0,
+      "answer_mode": "extractive",
+      "latency_ms": 0.75
+    },
+    {
+      "id": "Q3",
+      "question": "What CPT code covers base cataract extraction with IOL insertion?",
+      "expected_chunk_id": "PA-104#3",
+      "retrieved_chunk_ids": [
+        "PA-104#3",
+        "PA-104#1",
+        "PA-104#4"
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "keyword_coverage": 1.0,
+      "answer_mode": "extractive",
+      "latency_ms": 0.68
+    },
+    {
+      "id": "Q4",
+      "question": "How many topical medications and how long must a glaucoma patient try before MIGS is authorized?",
+      "expected_chunk_id": "PA-233#1",
+      "retrieved_chunk_ids": [
+        "PA-233#1",
+        "PA-233#3",
+        "PA-233#2"
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "keyword_coverage": 1.0,
+      "answer_mode": "extractive",
+      "latency_ms": 0.67
+    },
+    {
+      "id": "Q5",
+      "question": "What does denial code SYN-96 mean?",
+      "expected_chunk_id": "denial_reason_codes#1",
+      "retrieved_chunk_ids": [
+        "denial_reason_codes#1",
+        "denial_reason_codes#2",
+        "PA-211#4"
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "keyword_coverage": 1.0,
+      "answer_mode": "extractive",
+      "latency_ms": 0.61
+    },
+    {
+      "id": "Q6",
+      "question": "What is the minimum corneal astigmatism required to qualify for a toric IOL?",
+      "expected_chunk_id": "PA-104#1",
+      "retrieved_chunk_ids": [
+        "PA-104#1",
+        "PA-104#2",
+        "PA-104#4"
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "keyword_coverage": 1.0,
+      "answer_mode": "extractive",
+      "latency_ms": 0.7
+    },
+    {
+      "id": "Q7",
+      "question": "Is prior authorization required for a routine annual diabetic retinopathy screening?",
+      "expected_chunk_id": "PA-211#1",
+      "retrieved_chunk_ids": [
+        "PA-211#3",
+        "PA-211#1",
+        "PA-211#2"
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 0.5,
+      "keyword_coverage": 1.0,
+      "answer_mode": "extractive",
+      "latency_ms": 0.74
+    },
+    {
+      "id": "Q8",
+      "question": "What visual field and imaging tests are needed before MIGS surgery, and how recent must they be?",
+      "expected_chunk_id": "PA-233#2",
+      "retrieved_chunk_ids": [
+        "PA-233#1",
+        "PA-233#3",
+        "PA-233#2"
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 0.333,
+      "keyword_coverage": 1.0,
+      "answer_mode": "extractive",
+      "latency_ms": 0.59
+    },
+    {
+      "id": "Q9",
+      "question": "What is the most common reason a premium IOL prior auth request gets denied for missing paperwork?",
+      "expected_chunk_id": "PA-104#4",
+      "retrieved_chunk_ids": [
+        "PA-104#4",
+        "PA-104#2",
+        "PA-104#1"
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "keyword_coverage": 1.0,
+      "answer_mode": "extractive",
+      "latency_ms": 0.6
+    },
+    {
+      "id": "Q10",
+      "question": "What should I do if a claim was denied with code SYN-197?",
+      "expected_chunk_id": "denial_reason_codes#1",
+      "retrieved_chunk_ids": [
+        "denial_reason_codes#1",
+        "PA-211#3",
+        "PA-211#4"
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "keyword_coverage": 0.0,
+      "answer_mode": "extractive",
+      "latency_ms": 0.65
+    },
+    {
+      "id": "Q11",
+      "question": "Can MIGS be authorized as a standalone procedure without cataract surgery?",
+      "expected_chunk_id": "PA-233#1",
+      "retrieved_chunk_ids": [
+        "PA-233#1",
+        "PA-233#3",
+        "PA-104#3"
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "keyword_coverage": 1.0,
+      "answer_mode": "extractive",
+      "latency_ms": 0.57
+    },
+    {
+      "id": "Q12",
+      "question": "What modifier is needed for bilateral cataract surgery billed on separate dates?",
+      "expected_chunk_id": "PA-104#3",
+      "retrieved_chunk_ids": [
+        "PA-104#3",
+        "PA-233#1",
+        "PA-233#3"
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "keyword_coverage": 1.0,
+      "answer_mode": "extractive",
+      "latency_ms": 0.65
+    }
+  ]
+}

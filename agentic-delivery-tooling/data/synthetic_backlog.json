@@ -1,0 +1,22 @@
+{
+  "generated": "synthetic — no real product, customer, or company data",
+  "defect_pool": [
+    {"id": "DEF-1001", "title": "Null category field on bulk import", "root_cause_signature": "bulk-import-null-field", "created_days_ago": 3, "telemetry_hits_7d": 412, "status": "auto-filed"},
+    {"id": "DEF-1002", "title": "Category field missing after CSV re-upload", "root_cause_signature": "bulk-import-null-field", "created_days_ago": 2, "telemetry_hits_7d": 388, "status": "auto-filed"},
+    {"id": "DEF-1003", "title": "Import job drops category on retry", "root_cause_signature": "bulk-import-null-field", "created_days_ago": 5, "telemetry_hits_7d": 265, "status": "auto-filed"},
+    {"id": "DEF-1010", "title": "Timeout on large attribute payload", "root_cause_signature": "payload-timeout", "created_days_ago": 4, "telemetry_hits_7d": 190, "status": "auto-filed"},
+    {"id": "DEF-1011", "title": "Attribute save times out above 500 rows", "root_cause_signature": "payload-timeout", "created_days_ago": 6, "telemetry_hits_7d": 174, "status": "auto-filed"},
+    {"id": "DEF-1020", "title": "Duplicate SKU created on race condition", "root_cause_signature": "dedupe-race-condition", "created_days_ago": 1, "telemetry_hits_7d": 96, "status": "auto-filed"},
+    {"id": "DEF-1030", "title": "Stale cache returns old price after update", "root_cause_signature": "cache-invalidation-delay", "created_days_ago": 7, "telemetry_hits_7d": 61, "status": "auto-filed"},
+    {"id": "DEF-1031", "title": "Price shown stale for ~2 min post-edit", "root_cause_signature": "cache-invalidation-delay", "created_days_ago": 8, "telemetry_hits_7d": 54, "status": "auto-filed"},
+    {"id": "DEF-1040", "title": "Minor: tooltip text truncated on small screens", "root_cause_signature": "ui-tooltip-truncation", "created_days_ago": 12, "telemetry_hits_7d": 8, "status": "auto-filed"}
+  ],
+  "todo_pool": [
+    {"id": "STORY-201", "title": "Add bulk re-map action for category mismatches", "category": "catalog-quality", "created_days_ago": 41, "last_touched_days_ago": 39, "status": "To Do"},
+    {"id": "STORY-202", "title": "Support secondary category assignment", "category": "catalog-quality", "created_days_ago": 55, "last_touched_days_ago": 55, "status": "To Do"},
+    {"id": "STORY-210", "title": "Add retry-with-backoff to import worker", "category": "reliability", "created_days_ago": 63, "last_touched_days_ago": 30, "status": "To Do"},
+    {"id": "STORY-220", "title": "Expose validation-packet export as CSV", "category": "reporting", "created_days_ago": 12, "last_touched_days_ago": 3, "status": "To Do"},
+    {"id": "STORY-230", "title": "Investigate: alternate attribute-schema spike", "category": "research", "created_days_ago": 90, "last_touched_days_ago": 88, "status": "To Do"},
+    {"id": "STORY-231", "title": "Investigate: alternate attribute-schema spike (v2)", "category": "research", "created_days_ago": 47, "last_touched_days_ago": 47, "status": "To Do"}
+  ]
+}

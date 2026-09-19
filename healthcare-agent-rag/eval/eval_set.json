@@ -1,0 +1,14 @@
+[
+  {"id": "Q1", "question": "What documentation is required for a toric IOL prior authorization?", "expected_chunk_id": "PA-104#2", "expected_keywords": ["topography", "biometry", "acknowledgment"]},
+  {"id": "Q2", "question": "How often can a member with mild NPDR get a diabetic retinopathy screening?", "expected_chunk_id": "PA-211#2", "expected_keywords": ["6 months", "mild"]},
+  {"id": "Q3", "question": "What CPT code covers base cataract extraction with IOL insertion?", "expected_chunk_id": "PA-104#3", "expected_keywords": ["66984"]},
+  {"id": "Q4", "question": "How many topical medications and how long must a glaucoma patient try before MIGS is authorized?", "expected_chunk_id": "PA-233#1", "expected_keywords": ["2 topical", "90 days"]},
+  {"id": "Q5", "question": "What does denial code SYN-96 mean?", "expected_chunk_id": "denial_reason_codes#1", "expected_keywords": ["frequency limit"]},
+  {"id": "Q6", "question": "What is the minimum corneal astigmatism required to qualify for a toric IOL?", "expected_chunk_id": "PA-104#1", "expected_keywords": ["1.0 diopter"]},
+  {"id": "Q7", "question": "Is prior authorization required for a routine annual diabetic retinopathy screening?", "expected_chunk_id": "PA-211#1", "expected_keywords": ["without prior authorization"]},
+  {"id": "Q8", "question": "What visual field and imaging tests are needed before MIGS surgery, and how recent must they be?", "expected_chunk_id": "PA-233#2", "expected_keywords": ["visual field", "OCT", "6 months"]},
+  {"id": "Q9", "question": "What is the most common reason a premium IOL prior auth request gets denied for missing paperwork?", "expected_chunk_id": "PA-104#4", "expected_keywords": ["acknowledgment"]},
+  {"id": "Q10", "question": "What should I do if a claim was denied with code SYN-197?", "expected_chunk_id": "denial_reason_codes#1", "expected_keywords": ["retroactive authorization"]},
+  {"id": "Q11", "question": "Can MIGS be authorized as a standalone procedure without cataract surgery?", "expected_chunk_id": "PA-233#1", "expected_keywords": ["standalone", "medical director"]},
+  {"id": "Q12", "question": "What modifier is needed for bilateral cataract surgery billed on separate dates?", "expected_chunk_id": "PA-104#3", "expected_keywords": ["-RT", "-LT"]}
+]
