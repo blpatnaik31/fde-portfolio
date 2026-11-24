@@ -1,0 +1,64 @@
+/* FDE theme: same system as the TPM site, cooler indigo surface with a violet/cyan accent. */
+:root {
+  --surface: #10121c;
+  --surface-raised: #161a28;
+  --surface-card: #1b2032;
+  --surface-soft: #22283d;
+  --ink: #eceef8;
+  --ink-muted: #aeb3cc;
+  --ink-faint: #737a99;
+  --line: rgba(200, 205, 240, 0.15);
+  --line-strong: rgba(200, 205, 240, 0.28);
+  --accent: #a9a4ff;
+  --accent-deep: #4a3fb8;
+  --accent-warm: #6fd6e8;
+}
+
+body {
+  background:
+    radial-gradient(circle at 80% -10%, rgba(103, 90, 220, 0.2), transparent 30rem),
+    linear-gradient(180deg, #10121c 0%, #10121c 70%, #121522 100%);
+}
+
+.code-block {
+  margin: 1.2rem 0 0;
+  padding: 1rem 1.1rem;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.28);
+  color: var(--ink-muted);
+  font: 0.82rem/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  white-space: pre;
+}
+
+.status-pill {
+  display: inline-block;
+  margin-top: 0.8rem;
+  padding: 0.25rem 0.65rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  color: var(--accent-warm);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+}
+
+.eval-table td.miss { color: var(--critical); font-weight: 600; }
+.eval-table td.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.eval-table td:first-child { white-space: nowrap; }
+
+.lesson-list { counter-reset: lesson; list-style: none; padding: 0; }
+.lesson-list li {
+  position: relative;
+  padding: 0 0 1rem 2.4rem;
+}
+.lesson-list li::before {
+  counter-increment: lesson;
+  content: counter(lesson, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 0.1rem;
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
