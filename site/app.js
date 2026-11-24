@@ -18,19 +18,20 @@ const projects = [
       "Ranked clusters on telemetry hit counts instead of recency or filer, so 'why this and not that' is answered with a number.",
       "Made the human gate structural: every run prints a full proposal, and nothing is applied without --apply plus a typed confirmation. No flag skips both.",
     ],
-    diagram: `Synthetic backlog (defects + To-Do, fake telemetry)
-             │
-     ┌───────┴────────┐
-     ▼                ▼
- Triage agent     Stale-review agent
- cluster → rank   cluster → join        ← shared lib.py
-     └───────┬────────┘
-             ▼
-   Orchestrator → one review deck (Markdown)
-             ▼
-   HUMAN GATE: --apply + typed confirmation
-             ▼
-   (simulated) tracker write`,
+    diagram: {
+      label: "Weekly agent run, from synthetic backlog to a gated tracker write",
+      stages: [
+        { step: "Input", nodes: [{ kind: "data", title: "Synthetic backlog", detail: "Defect and To-Do pools with fake telemetry counts" }] },
+        { step: "Agents", nodes: [
+          { kind: "code", title: "Triage agent", detail: "Cluster duplicates, rank by combined telemetry" },
+          { kind: "code", title: "Stale-review agent", detail: "Cluster and join items untouched 30+ days" },
+        ], note: "Both share lib.py: small, unit-tested cluster · rank · join functions" },
+        { step: "Review", nodes: [{ kind: "output", title: "Orchestrator", detail: "Renders one Markdown review deck with the rationale for every proposal" }] },
+        { step: "Gate", nodes: [{ kind: "human", title: "Human approval", detail: "--apply plus a typed confirmation. No flag skips both." }] },
+        { step: "Write", nodes: [{ kind: "external", title: "Tracker write", detail: "Simulated here; a real tracker write in production" }] },
+      ],
+      caption: "Every run prints the full proposal. Nothing is written until a person types the confirmation.",
+    },
     run: `cd agents
 python3 triage_agent.py              # dry-run triage proposal
 python3 stale_review_agent.py        # dry-run stale-review cut
@@ -67,15 +68,24 @@ python3 run_weekly_agents.py --apply # then prompts for the human gate`,
       "Two honest generation paths: Claude synthesizes a grounded, cited answer when ANTHROPIC_API_KEY is set; otherwise top passages are returned verbatim and cited. Neither answers from outside the retrieved passages.",
       "Twelve hand-written eval questions, each with a known source chunk and expected keywords, run against the full pipeline.",
     ],
-    diagram: `data/policies/*.md
-      ▼
-chunking.py   section-aware chunks (title + body indexed)
-      ▼
-retrieval.py  TF-IDF + cosine, preamble chunks excluded
-      ▼
-generate.py   Claude synthesis if key set, else extractive + citations
-      ▼
-pipeline.py → app.py (Flask UI) / CLI → eval/run_eval.py`,
+    diagram: {
+      label: "RAG pipeline from policy documents through retrieval and generation to the UI, CLI and eval harness",
+      stages: [
+        { step: "Corpus", nodes: [{ kind: "data", title: "Policy documents", detail: "4 synthetic prior-auth policies in Markdown" }] },
+        { step: "Chunk", nodes: [{ kind: "code", title: "Section-aware chunking", detail: "Title + body indexed together; preamble chunks excluded" }] },
+        { step: "Retrieve", nodes: [{ kind: "code", title: "TF-IDF + cosine", detail: "Deterministic, zero cost, sub-millisecond" }] },
+        { step: "Generate", nodes: [
+          { kind: "llm", title: "Claude synthesis", detail: "Used when ANTHROPIC_API_KEY is set; grounded and cited" },
+          { kind: "code", title: "Extractive answer", detail: "Default: top passages verbatim, cited" },
+        ], note: "Either path answers only from retrieved passages, and says \"I don't know\" when nothing matches" },
+        { step: "Use", nodes: [
+          { kind: "output", title: "Flask UI", detail: "localhost:5050" },
+          { kind: "output", title: "CLI", detail: "src/pipeline.py" },
+          { kind: "output", title: "Eval harness", detail: "12 questions · hit@3 · MRR · coverage" },
+        ] },
+      ],
+      caption: "Classical retrieval keeps the system runnable with no key; the LLM is an optional upgrade, not a dependency.",
+    },
     run: `pip install -r requirements.txt
 python3 src/pipeline.py "What documentation is required for a toric IOL prior authorization?"
 python3 eval/run_eval.py
@@ -127,10 +137,22 @@ python3 app.py   # http://localhost:5050`,
       "Receipts arriving as photos or email run through an n8n workflow (capture, parse, structure) with no human in the loop for the routine case.",
       "Structured data lands in Notion alongside Gmail, Google Calendar, and Google Drive, where the rest of my planning already lives.",
     ],
-    diagram: `Bank accounts ──Plaid──▶ transaction sync ──┐
-                                             ├──▶ structured store ──▶ Notion / reporting
-Receipts (photo / email) ──▶ n8n workflow ───┘
-                     capture → parse → structure`,
+    diagram: {
+      label: "Two ingestion paths, Plaid bank sync and n8n receipt parsing, feeding one structured store and Notion",
+      stages: [
+        { step: "Sources", nodes: [
+          { kind: "external", title: "Bank accounts", detail: "Synced automatically through Plaid" },
+          { kind: "external", title: "Receipts", detail: "Photos or email" },
+        ] },
+        { step: "Ingest", nodes: [
+          { kind: "code", title: "Transaction sync", detail: "No manual CSV exports" },
+          { kind: "code", title: "n8n workflow", detail: "Capture → parse → structure" },
+        ] },
+        { step: "Store", nodes: [{ kind: "data", title: "Structured store", detail: "One place for transactions and line items" }] },
+        { step: "Use", nodes: [{ kind: "output", title: "Notion and reporting", detail: "Next to Gmail, Calendar and Drive planning" }] },
+      ],
+      caption: "The routine case runs with no human in the loop; my time goes to the decisions.",
+    },
     outcomes: [
       ["2", "ingestion paths: bank sync and receipts"],
       ["0", "manual CSV exports"],
@@ -155,6 +177,34 @@ document.querySelector("#current-year").textContent = new Date().getFullYear();
 
 const tagList = (tags) => `<div class="tag-list">${tags.map((tag) => `<span class="tag">${tag}</span>`).join("")}</div>`;
 const code = (text) => `<pre class="code-block"><code>${text.replace(/&/g, "&amp;").replace(/</g, "&lt;")}</code></pre>`;
+
+const KINDS = {
+  data: { label: "Data", icon: '<ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/>' },
+  code: { label: "Deterministic code", icon: '<path d="m8 8-4 4 4 4"/><path d="m16 8 4 4-4 4"/><path d="m14 5-4 14"/>' },
+  llm: { label: "LLM (optional)", icon: '<path d="M12 3v4M12 17v4M3 12h4M17 12h4"/><path d="m12 8 1.5 2.5L16 12l-2.5 1.5L12 16l-1.5-2.5L8 12l2.5-1.5Z"/>' },
+  human: { label: "Human decision", icon: '<circle cx="12" cy="8" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/>' },
+  output: { label: "Output", icon: '<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 13h8M8 17h5"/>' },
+  external: { label: "External system", icon: '<path d="M14 4h6v6"/><path d="m20 4-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>' },
+};
+const kindIcon = (kind) => `<svg class="dg-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">${KINDS[kind].icon}</svg>`;
+
+function diagram(d) {
+  const used = [...new Set(d.stages.flatMap((st) => st.nodes.map((n) => n.kind)))];
+  const stages = d.stages.map((st, i) => `<li class="dg-stage">
+      <span class="dg-step"><span class="dg-step-num">${String(i + 1).padStart(2, "0")}</span>${st.step}</span>
+      <div class="dg-body">
+        <ul class="dg-nodes" data-count="${st.nodes.length}">${st.nodes.map((n) => `<li class="dg-node dg-${n.kind}">
+          <span class="dg-kind">${kindIcon(n.kind)}${KINDS[n.kind].label}</span>
+          <strong>${n.title}</strong><span class="dg-detail">${n.detail}</span>
+        </li>`).join("")}</ul>
+        ${st.note ? `<p class="dg-note">${st.note}</p>` : ""}
+      </div>
+    </li>`).join("");
+  return `<figure class="diagram">
+    <ol class="dg-flow" aria-label="${d.label}">${stages}</ol>
+    <figcaption><span class="dg-legend" aria-hidden="true">${used.map((k) => `<span class="dg-legend-item dg-${k}">${kindIcon(k)}${KINDS[k].label}</span>`).join("")}</span><span>${d.caption}</span></figcaption>
+  </figure>`;
+}
 
 function projectCard(item) {
   return `<a class="work-card" href="#/projects/${item.slug}" data-case-card data-tags="${item.filters.join("|")}">
@@ -238,7 +288,7 @@ function renderProject(slug) {
   main.innerHTML = `<section class="detail-hero"><div class="container"><span class="eyebrow">${item.kicker} · Project ${item.number}</span><h1>${item.title}</h1><p class="lede">${item.summary}</p><div class="detail-meta"><div class="meta-item"><small>Status</small><span>${item.status}</span></div><div class="meta-item"><small>Stack</small><span>${item.tags.join(" · ")}</span></div><div class="meta-item"><small>Source</small><span><a href="${REPO}/${item.slug}" target="_blank" rel="noreferrer">GitHub ↗</a></span></div></div></div></section>
   <div class="container detail-layout"><article class="detail-content">
     <section class="detail-section"><h2>The problem</h2><p>${item.problem}</p></section>
-    <section class="detail-section"><h2>Architecture</h2>${code(item.diagram)}</section>
+    <section class="detail-section"><h2>Architecture</h2>${diagram(item.diagram)}</section>
     <section class="detail-section"><h2>The approach</h2><ul>${item.approach.map((step) => `<li>${step}</li>`).join("")}</ul></section>
     <section class="detail-section"><h2>By the numbers</h2><div class="outcomes-grid">${item.outcomes.map(([value, label]) => `<div class="outcome-card"><span class="outcome-value">${value}</span><span class="outcome-label">${label}</span></div>`).join("")}</div></section>
     ${projectExtras(item)}

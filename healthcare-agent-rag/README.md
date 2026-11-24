@@ -12,13 +12,30 @@ A provider's office or a claims team needs a fast, cited answer to "what does po
 
 ## Architecture
 
-```
-data/policies/*.md  →  chunking.py (section-aware chunking)  →  retrieval.py (TF-IDF + cosine)
-                                                                        ↓
-                                                         generate.py (extractive fallback,
-                                                         or LLM synthesis if ANTHROPIC_API_KEY set)
-                                                                        ↓
-                                                   pipeline.py  →  app.py (Flask UI) / CLI
+```mermaid
+flowchart TD
+  docs[("data/policies/*.md<br/>4 synthetic policies")]:::data
+  chunk["chunking.py<br/>section-aware chunks, title + body"]:::code
+  retr["retrieval.py<br/>TF-IDF + cosine"]:::code
+  subgraph gen ["generate.py · answers only from retrieved passages"]
+    llm["Claude synthesis<br/>if ANTHROPIC_API_KEY is set"]:::llm
+    extr["Extractive answer<br/>default, verbatim + cited"]:::code
+  end
+  pipe["pipeline.py"]:::code
+  ui["app.py<br/>Flask UI"]:::out
+  cli["CLI"]:::out
+  ev["eval/run_eval.py"]:::out
+
+  docs --> chunk --> retr --> llm & extr
+  llm & extr --> pipe
+  pipe --> ui & cli & ev
+
+  classDef data fill:#0e3a44,stroke:#6fd6e8,color:#eceef8
+  classDef code fill:#24224d,stroke:#a9a4ff,color:#eceef8
+  classDef llm fill:#3d2e1a,stroke:#f2b978,color:#eceef8,stroke-dasharray:5 3
+  classDef human fill:#4a2323,stroke:#ef8b84,color:#eceef8,stroke-width:2px
+  classDef out fill:#1d3a2a,stroke:#9ee6b8,color:#eceef8
+  classDef ext fill:#2a2e40,stroke:#c9cde6,color:#eceef8
 ```
 
 **Retrieval is classical IR (TF-IDF), not an embedding model or an LLM call.** Over a small, fixed policy corpus this is a deterministic, zero-cost, zero-latency choice that a reviewer can run with no API key and no setup — the same judgment call the FDE pattern rewards: don't reach for a probabilistic/expensive tool when a deterministic one solves the actual problem.

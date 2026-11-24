@@ -62,3 +62,130 @@ body {
   font-size: 0.8rem;
   font-weight: 700;
 }
+
+/* ---------- Architecture diagrams ---------- */
+.diagram {
+  --dg-data: #6fd6e8;
+  --dg-code: #a9a4ff;
+  --dg-llm: #f2b978;
+  --dg-human: #ef8b84;
+  --dg-output: #9ee6b8;
+  --dg-external: #c9cde6;
+  margin: 0.4rem 0 0;
+}
+.detail-section .dg-flow, .detail-section .dg-nodes { list-style: none; margin: 0; padding: 0; }
+.detail-section .dg-flow li + li { margin-top: 0; }
+.dg-stage {
+  position: relative;
+  display: grid;
+  grid-template-columns: 6.5rem 1fr;
+  gap: 1rem;
+  padding-bottom: 2.1rem;
+}
+.dg-stage:last-child { padding-bottom: 0; }
+/* connector: vertical line with an arrowhead into the next stage */
+.dg-stage:not(:last-child) .dg-body::after {
+  content: "";
+  position: absolute;
+  left: calc(50% - 1px);
+  bottom: -2.1rem;
+  width: 2px;
+  height: 2.1rem;
+  background: linear-gradient(var(--line-strong), var(--accent));
+}
+.dg-stage:not(:last-child) .dg-body::before {
+  content: "";
+  position: absolute;
+  left: calc(50% - 5px);
+  bottom: calc(-2.1rem + 3px);
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid var(--accent);
+  border-bottom: 2px solid var(--accent);
+  transform: rotate(45deg);
+  z-index: 1;
+}
+.dg-body { position: relative; }
+.dg-step {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding-top: 0.9rem;
+  color: var(--ink-muted);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.dg-step-num { color: var(--accent); font-variant-numeric: tabular-nums; }
+.dg-nodes { display: grid; gap: 0.75rem; grid-template-columns: repeat(var(--cols, 1), minmax(0, 1fr)); }
+.dg-nodes[data-count="2"] { --cols: 2; }
+.dg-nodes[data-count="3"] { --cols: 3; }
+.detail-section .dg-node {
+  --c: var(--ink-muted);
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin: 0;
+  padding: 0.85rem 1rem 0.95rem;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--c);
+  border-radius: 10px;
+  background: var(--surface-card);
+  color: var(--ink-muted);
+  line-height: 1.45;
+}
+.dg-node strong { color: var(--ink); font-size: 0.98rem; font-weight: 600; }
+.dg-detail { font-size: 0.82rem; }
+.dg-kind, .dg-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--c);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.dg-icon { width: 14px; height: 14px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.dg-data { --c: var(--dg-data); }
+.dg-code { --c: var(--dg-code); }
+.dg-llm { --c: var(--dg-llm); }
+.dg-human { --c: var(--dg-human); }
+.dg-output { --c: var(--dg-output); }
+.dg-external { --c: var(--dg-external); }
+.detail-section .dg-node.dg-human { background: color-mix(in srgb, var(--dg-human) 9%, var(--surface-card)); border-color: color-mix(in srgb, var(--dg-human) 45%, transparent); border-left-color: var(--dg-human); }
+.detail-section .dg-node.dg-llm { border-style: dashed; border-left-style: solid; }
+.detail-section .dg-note {
+  margin: 0.6rem 0 0;
+  padding: 0.5rem 0.8rem;
+  border: 1px dashed var(--line-strong);
+  border-radius: 8px;
+  color: var(--ink-faint);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  text-align: center;
+}
+.diagram figcaption {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-top: 1.6rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+  color: var(--ink-faint);
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+.dg-legend { display: flex; flex-wrap: wrap; gap: 0.5rem 1.1rem; }
+
+@media (max-width: 640px) {
+  .dg-stage { grid-template-columns: 1fr; gap: 0.5rem; }
+  .dg-step { flex-direction: row; gap: 0.5rem; padding-top: 0; }
+  .dg-nodes[data-count="3"] { --cols: 1; }
+  .dg-nodes[data-count="2"] { --cols: 1; }
+}
+
+/* Let wide children (code blocks, tables) scroll inside their box instead of widening the page column. */
+.detail-layout { grid-template-columns: minmax(0, 1fr) 280px; }
+@media (max-width: 850px) { .detail-layout { grid-template-columns: minmax(0, 1fr); } }
