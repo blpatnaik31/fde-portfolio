@@ -1,37 +1,31 @@
 # Architecture
 
+```mermaid
+flowchart TD
+  backlog[("Synthetic backlog<br/>defect + To-Do pools, fake telemetry")]:::data
+  subgraph agents ["Two narrow agents · shared lib.py (cluster / rank / join)"]
+    triage["Triage agent<br/>cluster → rank"]:::code
+    stale["Stale-review agent<br/>cluster → join"]:::code
+  end
+  orch["Orchestrator<br/>renders one Markdown review deck"]:::out
+  gate{{"HUMAN GATE<br/>--apply + typed confirmation"}}:::human
+  write["Tracker write<br/>(simulated)"]:::ext
+
+  backlog --> triage & stale
+  triage -- "proposed umbrella stories" --> orch
+  stale -- "proposed review cut" --> orch
+  orch --> gate
+  gate -- "confirmed" --> write
+
+  classDef data fill:#0e3a44,stroke:#6fd6e8,color:#eceef8
+  classDef code fill:#24224d,stroke:#a9a4ff,color:#eceef8
+  classDef llm fill:#3d2e1a,stroke:#f2b978,color:#eceef8,stroke-dasharray:5 3
+  classDef human fill:#4a2323,stroke:#ef8b84,color:#eceef8,stroke-width:2px
+  classDef out fill:#1d3a2a,stroke:#9ee6b8,color:#eceef8
+  classDef ext fill:#2a2e40,stroke:#c9cde6,color:#eceef8
 ```
-                    ┌─────────────────────────┐
-                    │   Synthetic backlog      │
-                    │   (defect pool + To-Do   │
-                    │   pool, fake telemetry)  │
-                    └────────────┬─────────────┘
-                                 │
-              ┌──────────────────┴───────────────────┐
-              ▼                                       ▼
-   ┌─────────────────────┐               ┌─────────────────────────┐
-   │   Triage agent        │               │   Stale-review agent     │
-   │   cluster → rank      │               │   cluster → join         │
-   │   (lib.py: shared     │               │   (lib.py: shared        │
-   │    cluster/rank/join) │               │    cluster/rank/join)    │
-   └──────────┬────────────┘               └────────────┬─────────────┘
-              │  proposed umbrella stories                │  proposed review cut
-              └───────────────────┬────────────────────────┘
-                                  ▼
-                     ┌────────────────────────┐
-                     │  Orchestrator            │
-                     │  renders one review deck │
-                     │  (Markdown)               │
-                     └────────────┬──────────────┘
-                                  ▼
-                     ┌────────────────────────┐
-                     │   HUMAN GATE              │
-                     │  --apply + typed          │
-                     │  confirmation required    │
-                     └────────────┬──────────────┘
-                                  ▼
-                    (simulated) tracker write
-```
+
+Colors mark the kind of step: data, deterministic code, output, human decision, external system. The only path to a write runs through the human gate.
 
 ## Design decisions
 
