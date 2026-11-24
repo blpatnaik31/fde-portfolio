@@ -293,7 +293,7 @@ function renderProject(slug) {
     <section class="detail-section"><h2>By the numbers</h2><div class="outcomes-grid">${item.outcomes.map(([value, label]) => `<div class="outcome-card"><span class="outcome-value">${value}</span><span class="outcome-label">${label}</span></div>`).join("")}</div></section>
     ${projectExtras(item)}
     ${item.run ? `<section class="detail-section"><h2>Run it</h2>${code(item.run)}<div class="button-row"><a class="button button-primary" href="${REPO}/${item.slug}" target="_blank" rel="noreferrer">View source on GitHub <span aria-hidden="true">↗</span></a></div></section>` : ""}
-  </article><aside class="detail-sidebar"><div class="side-label">More projects</div><div class="side-list">${projects.filter((o) => o.slug !== item.slug).map((o) => `<a href="#/projects/${o.slug}">${o.number} · ${o.kicker}</a>`).join("")}</div><div class="side-label">Program delivery</div><div class="side-list"><a href="https://blpatnaik31.github.io/tpm/">TPM portfolio →</a></div></aside></div>`;
+  </article><aside class="detail-sidebar"><div class="side-label">More projects</div><div class="side-list">${projects.filter((o) => o.slug !== item.slug).map((o) => `<a href="#/projects/${o.slug}">${o.number} · ${o.kicker}</a>`).join("")}</div><div class="side-label">Companion portfolios</div><div class="side-list"><a href="https://blpatnaik31.github.io/tpm/">TPM: delivery outcomes →</a><a href="https://blpatnaik31.github.io/arch/">Architecture: design decisions →</a></div></aside></div>`;
 }
 
 function renderPrinciples() {
