@@ -1,6 +1,6 @@
 # FDE Portfolio — Lokapati Bhogela
 
-**Live site: [blpatnaik31.github.io/fde](https://blpatnaik31.github.io/fde/)** · Companion: [TPM portfolio](https://blpatnaik31.github.io/tpm/) · [All portfolios](https://blpatnaik31.github.io/)
+**Live site: [blpatnaik31.github.io/fde](https://blpatnaik31.github.io/fde/)** · Companions: [TPM portfolio](https://blpatnaik31.github.io/tpm/) · [Architecture portfolio](https://blpatnaik31.github.io/arch/) · [All portfolios](https://blpatnaik31.github.io/)
 
 Senior Product Manager / Technical Program Manager, 13+ years in healthcare IT and medical devices, currently a Product Owner on an AI-platform team. I've spent most of my career on the delivery/program side of technical builds — but I also build. This repo is three examples: two real, runnable systems and one honest writeup of a live personal project.
 
