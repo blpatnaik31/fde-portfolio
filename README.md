@@ -1,4 +1,4 @@
-# FDE Portfolio — Lokapati "Loki" Patnaik
+# FDE Portfolio — Lokapati Bhogela
 
 **Live site: [blpatnaik31.github.io/fde](https://blpatnaik31.github.io/fde/)** · Companion: [TPM portfolio](https://blpatnaik31.github.io/tpm/) · [All portfolios](https://blpatnaik31.github.io/)
 

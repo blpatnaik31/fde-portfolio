@@ -1,6 +1,6 @@
 # Agentic Delivery Tooling
 
-A clean-room, open reconstruction of an agent pattern I designed and shipped in my current role (Product Owner, AI-platform team, Rithum Commerce) — two narrow, human-gated weekly agents that turn tedious backlog hygiene into a bounded, auditable weekly checkpoint, plus a trimmed sample of the reusable PO/PM skill pack I built alongside them.
+A clean-room, open reconstruction of an agent pattern I designed and shipped in my current role (Product Owner, AI-platform team at a commerce/marketplace SaaS platform) — two narrow, human-gated weekly agents that turn tedious backlog hygiene into a bounded, auditable weekly checkpoint, plus a trimmed sample of the reusable PO/PM skill pack I built alongside them.
 
 **What "clean-room" means here:** this code, the data it runs against, and every number in the README are synthetic and generic. No employer code, proprietary data, internal system names, or real metrics appear anywhere in this repo. What's real is the *pattern* — narrow agents, shared inspectable primitives, data-grounded ranking, and a structural human gate before any write. That's the part that's mine to demonstrate; the specific numbers and systems belong to the job.
 
