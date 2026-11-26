@@ -124,42 +124,56 @@ python3 app.py   # http://localhost:5050`,
   {
     slug: "artha-ai",
     number: "03",
-    title: "Artha.ai: personal finance automation I run every day",
-    kicker: "Live personal project",
-    summary: "Plaid bank syncing and an n8n receipt-parsing workflow, wired into the rest of my planning stack and running continuously on my own money.",
-    headline: "Live, used daily",
-    status: "Writeup · code not yet packaged for release",
-    tags: ["Automation", "Plaid", "n8n", "Integrations"],
+    title: "Artha.ai: from the finance tool I run every day to a product plan",
+    kicker: "Live tool · product in planning",
+    summary: "My own finance automation is now being planned as a read-only household money app. Six workstreams cover the business case, pricing, security, architecture, a design system, and wireframes, run as a delivery program with every decision written down.",
+    headline: "6 workstreams, 0 real data in the repo",
+    status: "Live personal tool · productization in planning",
+    tags: ["Product planning", "Security", "Automation", "Fintech"],
     filters: ["Automation"],
-    problem: "Tracking money by hand means CSV exports, retyped receipts, and data stuck in a siloed app. The goal was to automate the routine parts so the only decisions left are the ones that matter. The name comes from the Sanskrit for wealth, or the meaningful pursuit of resources.",
+    problem: "Budgeting apps get multi-account households wrong. They count transfers and credit-line draws as income, list the same kind of service billed on three different cards as three unrelated charges, and inherit the bank's wrong categories. My personal tool fixed this for my own money. The question now is whether it can become a product other households trust with their financial data. The name comes from the Sanskrit for wealth, or the meaningful pursuit of resources.",
     approach: [
-      "Bank transactions sync across accounts through Plaid instead of manual exports.",
-      "Receipts arriving as photos or email run through an n8n workflow (capture, parse, structure) with no human in the loop for the routine case.",
-      "Structured data lands in Notion alongside Gmail, Google Calendar, and Google Drive, where the rest of my planning already lives.",
+      "Ran productization as a delivery program: six workstreams in a private repo linked to a GitHub Project, with 65 tracked issues, architecture decision records, and a running log of steps, guardrails, and missteps.",
+      "Decided what the system will never do before designing it: never move money, and never store bank logins, full account numbers, card numbers, or SSNs. Every later design choice is checked against that list.",
+      "Kept the engine deterministic: transfer pairing, credit-draw exclusion, recurring-charge detection, and overlap grouping are rules with reason codes. The LLM only maps unknown merchants and answers questions over totals. Its output is treated as untrusted, and 12 prompt-injection test cases are written as the release gate for the AI layer, ready before any AI code exists.",
+      "Built a unit-economics model before setting prices. It showed bank-connection fees, not AI, drive cost, which reshaped the tiers and made the free tier import-only.",
+      "Designed a full file-import mode, so a household gets the whole review without connecting a bank. A step-by-step gap check against my own monthly review produced nine follow-up specs.",
+      "Synthetic data only. A CI data guard rejects card numbers, routing and account numbers, SSN-shaped values, and secrets, and its own test suite documents what it misses. Tests also keep the published pricing numbers in line with the model, and the design tokens at WCAG AA in both themes.",
     ],
     diagram: {
-      label: "Two ingestion paths, Plaid bank sync and n8n receipt parsing, feeding one structured store and Notion",
+      label: "Planned product flow: bank connection or file import, a deterministic engine, AI proposals, and a person who confirms",
       stages: [
         { step: "Sources", nodes: [
-          { kind: "external", title: "Bank accounts", detail: "Synced automatically through Plaid" },
-          { kind: "external", title: "Receipts", detail: "Photos or email" },
+          { kind: "external", title: "Bank connection", detail: "Read-only aggregator, optional" },
+          { kind: "data", title: "File import", detail: "CSV, OFX or QFX from each bank; works on every plan" },
         ] },
-        { step: "Ingest", nodes: [
-          { kind: "code", title: "Transaction sync", detail: "No manual CSV exports" },
-          { kind: "code", title: "n8n workflow", detail: "Capture → parse → structure" },
-        ] },
-        { step: "Store", nodes: [{ kind: "data", title: "Structured store", detail: "One place for transactions and line items" }] },
-        { step: "Use", nodes: [{ kind: "output", title: "Notion and reporting", detail: "Next to Gmail, Calendar and Drive planning" }] },
+        { step: "Clean", nodes: [{ kind: "code", title: "Deterministic engine", detail: "Pairs transfers, sets aside credit draws, finds recurring charges and overlaps" }], note: "Every exclusion carries a reason the user can open" },
+        { step: "Suggest", nodes: [{ kind: "llm", title: "AI proposals", detail: "Unknown merchants and questions over totals; output schema-checked" }] },
+        { step: "Confirm", nodes: [{ kind: "human", title: "Household decides", detail: "Accepts or fixes a label once for every charge from that merchant" }] },
+        { step: "Use", nodes: [{ kind: "output", title: "True cash flow", detail: "Real income and spending, overlaps, a cancel checklist" }] },
       ],
-      caption: "The routine case runs with no human in the loop; my time goes to the decisions.",
+      caption: "Read-only by design: nothing in the system can move money, and the AI writes only proposals.",
     },
     outcomes: [
-      ["2", "ingestion paths: bank sync and receipts"],
-      ["0", "manual CSV exports"],
-      ["4", "connected tools in the planning stack"],
-      ["Daily", "real use, not a one-time demo"],
+      ["6", "workstreams planned, from business case to wireframes"],
+      ["65", "tracked issues across 4 milestones"],
+      ["12", "prompt-injection cases written before the AI layer"],
+      ["0", "real transactions in the repo"],
     ],
-    why: "It is the same forward-deployed pattern outside of work: a real problem I feel personally, a bank data API, a workflow engine, and a document-parsing step, running continuously instead of abandoned after the demo worked once. Happy to walk through the implementation live.",
+    findings: [
+      ["The first price failed the model.", "At the original price, margin and LTV:CAC were too thin once bank-connection fees were counted. The plan now prices higher, caps synced institutions per tier, and keeps the free tier import-only."],
+      ["AI is not the cost.", "Caching categorization per merchant brings it under a cent per user per month. The real variable cost is the bank-connection service."],
+      ["A rule was letting the AI skip the human.", "Auditing the specs against these principles found that an AI merchant mapping could become trusted automatically. Now nothing the model suggests applies until people confirm it."],
+      ["The bank connection should be optional.", "Walking through my own monthly review showed most of it works from file imports alone, so import became a first-class path instead of a fallback."],
+      ["Exact-value scans are not enough for privacy.", "Twice, example numbers copied from my own finances slipped into draft docs and were caught in review before commit. The pattern guard couldn't catch that kind of leak, so its tests now say so, and examples are invented deliberately and checked for identifying patterns, not just exact values."],
+    ],
+    next: [
+      "8 to 12 discovery interviews and 5 moderated usability sessions on the low-fi wireframes, all using a synthetic household.",
+      "Real quotes from bank-connection providers to replace the model's estimates.",
+      "An outside security review of token encryption and sign-in before any build.",
+      "A brand decision, then hi-fi screens and an MVP that starts with file import.",
+    ],
+    why: "It is the forward-deployed pattern carried one step further: a tool I built for a problem I feel every month, now run through the same discovery, security, and design discipline I would bring to a customer. Happy to walk through the plan, the trade-offs, and the live tool.",
   },
 ];
 
@@ -245,7 +259,7 @@ function renderHome() {
   </div></section>
   <section class="section"><div class="container">${metrics()}</div></section>
   <section class="section"><div class="container">
-    <div class="section-heading"><div><span class="eyebrow">Projects</span><h2>Two runnable systems and one live tool.</h2></div><p>Each one runs on a laptop with no secrets, or is a tool I use every day.</p></div>
+    <div class="section-heading"><div><span class="eyebrow">Projects</span><h2>Two runnable systems and one live tool becoming a product.</h2></div><p>Each one runs on a laptop with no secrets, or is a tool I use every day.</p></div>
     <div class="work-grid">${projects.map(projectCard).join("")}</div>
   </div></section>
   <section class="section"><div class="container">
@@ -255,7 +269,7 @@ function renderHome() {
 }
 
 function renderProjects() {
-  main.innerHTML = `<section class="page-hero"><div class="container"><span class="eyebrow">Projects</span><h1>Builds you can run, read, and question.</h1><p class="lede">Agents with a structural human gate, a healthcare RAG system with a real eval harness, and a personal automation stack in daily use.</p></div></section>
+  main.innerHTML = `<section class="page-hero"><div class="container"><span class="eyebrow">Projects</span><h1>Builds you can run, read, and question.</h1><p class="lede">Agents with a structural human gate, a healthcare RAG system with a real eval harness, and a personal finance tool in daily use that is now being planned as a product.</p></div></section>
   <section class="section"><div class="container"><div class="filter-row" aria-label="Filter projects"><button class="filter-button" type="button" aria-pressed="true" data-filter="All">All projects</button>${["Agents", "RAG", "Healthcare", "Automation"].map((filter) => `<button class="filter-button" type="button" aria-pressed="false" data-filter="${filter}">${filter}</button>`).join("")}</div><div class="work-grid">${projects.map(projectCard).join("")}</div></div></section>`;
   document.querySelectorAll("[data-filter]").forEach((button) => button.addEventListener("click", () => {
     const filter = button.dataset.filter;
@@ -275,7 +289,8 @@ function projectExtras(item) {
     html += `<section class="detail-section"><h2>What the eval caught</h2><ol class="lesson-list">${item.lessons.map(([title, body]) => `<li><strong>${title}</strong> ${body}</li>`).join("")}</ol></section>`;
     html += `<section class="detail-section"><h2>Per-question results</h2><div class="skills-table-wrap"><table class="skills-table eval-table"><thead><tr><th>ID</th><th>Question</th><th>Reciprocal rank</th><th>Keyword coverage</th></tr></thead><tbody>${item.evalRows.map(([id, q, rr, kw]) => `<tr><td>${id}</td><td>${q}</td><td class="num">${rr}</td><td class="num${kw === "0%" ? " miss" : ""}">${kw}</td></tr>`).join("")}</tbody></table></div><p style="font-size:0.78rem;color:var(--ink-faint);margin-top:0.9rem">Extractive mode, no API key set. All policy documents are synthetic, written for this demo.</p></section>`;
   }
-  if (item.next) html += `<section class="detail-section"><h2>What I'd harden next</h2><ul>${item.next.map((n) => `<li>${n}</li>`).join("")}</ul></section>`;
+  if (item.findings) html += `<section class="detail-section"><h2>What the planning changed</h2><ol class="lesson-list">${item.findings.map(([title, body]) => `<li><strong>${title}</strong> ${body}</li>`).join("")}</ol></section>`;
+  if (item.next) html += `<section class="detail-section"><h2>${item.findings ? "What comes next" : "What I'd harden next"}</h2><ul>${item.next.map((n) => `<li>${n}</li>`).join("")}</ul></section>`;
   if (item.production) html += `<section class="detail-section"><h2>In production</h2><div class="scope-note"><strong>Clean-room reconstruction.</strong><br>${item.production}</div></section>`;
   if (item.skills) html += `<section class="detail-section"><h2>Skill pack sample</h2><p>Five of the 13 reusable PO/PM skills I run day to day, written as standalone Markdown skill definitions.</p>${tagList(item.skills)}</section>`;
   if (item.why) html += `<section class="detail-section"><h2>Why it's here</h2><p>${item.why}</p></section>`;
