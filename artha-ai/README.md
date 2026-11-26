@@ -1,37 +1,49 @@
-# Artha.ai — Personal Finance Automation
+# Artha.ai: from a personal finance tool to a product plan
 
-A personal finance automation platform I built and use myself. The name (Sanskrit/Telugu, roughly "wealth" or "meaningful pursuit of resources") reflects the goal: automate the tedious parts of tracking money so the only decisions left are the ones that actually matter.
+A personal finance automation platform I built and use myself, now being planned as a product. The name (Sanskrit/Telugu, roughly "wealth" or "meaningful pursuit of resources") reflects the goal: automate the tedious parts of tracking money so the only decisions left are the ones that matter.
 
-## What it does
+**Live site:** https://blpatnaik31.github.io/fde/#/projects/artha-ai
 
-- **Bank transaction syncing** via Plaid, pulling transactions across accounts automatically instead of manual CSV exports.
-- **Receipt parsing** via an n8n workflow — receipts get captured and parsed into structured line items automatically rather than typed in by hand.
-- Connected into a broader personal tooling stack (Notion, Gmail, Google Calendar, Google Drive) so financial data lands where the rest of my planning already lives, rather than in a siloed app.
+## The live tool
 
-## Architecture
+- **Bank transaction syncing** via Plaid across accounts, instead of manual CSV exports.
+- **Receipt parsing** through an n8n workflow: receipts are captured and parsed into structured line items automatically.
+- Connected to the rest of my planning stack (Notion, Gmail, Google Calendar, Google Drive), so financial data lands where my planning already lives.
 
-```mermaid
-flowchart LR
-  bank["Bank accounts"]:::ext -- Plaid --> sync["Transaction sync"]:::code
-  receipts["Receipts<br/>photo / email"]:::ext --> n8n["n8n workflow<br/>capture → parse → structure"]:::code
-  sync --> store[("Structured store")]:::data
-  n8n --> store
-  store --> notion["Notion / reporting"]:::out
+## The product plan (in progress)
 
-  classDef data fill:#0e3a44,stroke:#6fd6e8,color:#eceef8
-  classDef code fill:#24224d,stroke:#a9a4ff,color:#eceef8
-  classDef llm fill:#3d2e1a,stroke:#f2b978,color:#eceef8,stroke-dasharray:5 3
-  classDef human fill:#4a2323,stroke:#ef8b84,color:#eceef8,stroke-width:2px
-  classDef out fill:#1d3a2a,stroke:#9ee6b8,color:#eceef8
-  classDef ext fill:#2a2e40,stroke:#c9cde6,color:#eceef8
-```
+Budgeting apps get multi-account households wrong. They count transfers and credit-line draws as income, list the same kind of service billed on three different cards as three unrelated charges, and inherit the bank's wrong categories. The plan is a **read-only** household money app that fixes those numbers and explains every one of them.
 
-n8n (self-hosted workflow automation) is the orchestration layer — it's what makes "receipt comes in → gets parsed → lands as structured data" happen without a human in the loop for the routine case.
+Productization runs as a delivery program in a private repo linked to a GitHub Project: six workstreams, 65 tracked issues, architecture decision records, and a running log of steps, guardrails and missteps.
 
-## Why it's here
+| Workstream | What it produced |
+|---|---|
+| Business plan | Competitive landscape, personas, discovery interview kit, bottom-up market sizing, legal checklist |
+| Monetization | A live-formula unit-economics model, pricing tiers, risks, a recommendation memo |
+| Security guardrails | A "never store" list, data flow and trust boundaries, a STRIDE threat model, AI guardrails, a compliance map, and a CI data guard |
+| Technical design | 4 ADRs, architecture, data model, a deterministic detection engine, AI layer and evals, a full no-bank-connection (file-import) mode |
+| Design library | Tokens with a contrast test in CI, foundations, 11 component specs, accessibility and content guidelines, an HTML specimen |
+| Wireframes | A flow map, 16 low-fi screens across 9 flows, a usability test plan |
 
-This is the project that proves the FDE pattern outside of a work context: picking a real, personally-felt problem, wiring together a bank data API, a workflow automation tool, and a document-parsing step, and running the result myself, on my own money, continuously — not a tutorial project abandoned after the demo worked once.
+### Design choices
 
-## Status & limitations
+- **Never move money, never hold bank logins** or full account, card or Social Security numbers. This was decided before any architecture.
+- **Deterministic first.** Transfer pairing, credit-draw exclusion, recurring-charge detection and overlap grouping are rules with reason codes. The LLM maps unknown merchants and answers questions over totals, and its output is untrusted.
+- **People confirm what the AI suggests.** Nothing the model proposes changes a number until someone accepts it.
+- **The bank connection is optional.** Everything works from file imports, which is also the free tier.
+- **Synthetic data only.** No real transaction is in the repo. A CI guard checks for account numbers, card numbers and secrets, and its own tests document what it can't catch.
 
-This is a live personal tool, not a packaged open-source project — the codebase isn't structured for public release in its current form, so this page is a writeup rather than a full code mirror. Happy to walk through the actual implementation, workflows, and architecture decisions in more depth live.
+### What the planning changed
+
+- **The first price failed the unit-economics model** once bank-connection fees were counted. The plan now prices higher, caps synced institutions, and makes the free tier import-only.
+- **AI isn't the cost.** Per-merchant caching keeps categorization under a cent per user per month.
+- **A rule was letting the AI skip the human.** A principles audit caught an automatic path for AI merchant mappings and closed it.
+- **Exact-value scans aren't enough for privacy.** Example numbers copied from my own finances twice slipped into drafts and were caught in review before commit.
+
+### Next
+
+Discovery interviews and usability sessions (synthetic data only), real quotes from bank-connection providers, an outside security review, then an MVP that starts with file import.
+
+## Status
+
+The live tool is a personal codebase that isn't packaged for release. The product plan lives in a private repo. Happy to walk through either in depth.
